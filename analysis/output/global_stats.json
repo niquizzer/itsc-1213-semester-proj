@@ -1,0 +1,25 @@
+{
+  "classification_counts": {
+    "HIGH": 2,
+    "LOW": 4,
+    "baseline": 8
+  },
+  "floor_sensitivity": {
+    "100": {
+      "count": 6050,
+      "high_rate": 0.11851239669421487
+    },
+    "25": {
+      "count": 13798,
+      "high_rate": 0.0947238730250761
+    },
+    "50": {
+      "count": 9142,
+      "high_rate": 0.10643185298621746
+    }
+  },
+  "global_rate": 0.11021759697256386,
+  "n_high": 932,
+  "n_movies": 8456,
+  "n_themes": 14
+}

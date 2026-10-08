@@ -1,0 +1,35 @@
+{
+  "keywords": {
+    "dropped_bad_id": 0,
+    "dropped_duplicate": 987,
+    "kept": 45432,
+    "total_rows": 46419,
+    "unparsable": 14340
+  },
+  "metadata": {
+    "dropped_bad_id": 3,
+    "dropped_bad_va": 3,
+    "dropped_bad_vc": 0,
+    "dropped_duplicate": 30,
+    "kept": 45430,
+    "total_rows": 45466
+  },
+  "working_set": {
+    "below_floor": 36287,
+    "high_count": 973,
+    "kept": 9142,
+    "keyword_count": 45432,
+    "metadata_count": 45430,
+    "min_votes": 50,
+    "missing_keywords": 1,
+    "missing_keywords_ids": [
+      401840
+    ],
+    "missing_metadata": 3,
+    "missing_metadata_ids": [
+      82663,
+      122662,
+      249260
+    ]
+  }
+}
