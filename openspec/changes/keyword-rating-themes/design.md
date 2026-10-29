@@ -69,6 +69,14 @@ Every public function/method has a docstring and full type hints (parameter and 
 **D11. README scope.**
 `README.md` at the repo root covers: what the project does, data attribution (TMDB + MovieLens), setup (venv + `pip install -r requirements.txt`), how to run (`analysis/01-load.py` through `06-report.py`), the layout tree, and how to interpret the theme table, HIGH/LOW lists, oddballs, and caveats. It is finalized and verified against a clean run in the final task group.
 
+**D12. Preconditions on every function.**
+Every pipeline function states its preconditions in a `Preconditions:` docstring section and enforces them at the top of its body with the `require_*` helpers in `analysis/preconditions.py` (column presence, integer/fraction ranges, parallel-list lengths, existing files, sparse-matrix shape). Violations raise `PreconditionError` (a `ValueError`; `TypePreconditionError` is also a `TypeError`) naming the argument and the value received, so a wrong call fails at the call site rather than deep inside pandas/scikit-learn. Functions with no preconditions say `Preconditions: none` explicitly, and the style test enforces the section's presence.
+*Alternatives:* bare `assert` statements (stripped under `python -O`, and messages are rarely informative), or no checks (errors surface as opaque `KeyError`/`ValueError` from library code). Rejected in favour of explicit, documented contracts.
+
+**D13. Custom sort keys instead of ad-hoc sorts.**
+Every ordering rule is a named key function in `analysis/sorting.py` (`theme_id_key`, `high_pct_desc_key`, `genre_count_key`, `classification_rank_key`, `keyword_weight_key`, `silhouette_key`, ...) applied through `sorted(..., key=...)` or the stable `sort_frame(frame, key)` helper. Keys return tuples so ties are deterministic, negate a component for descending order, use rank tables for categorical order, and map `NaN` to the end. Report lists are "most extreme first"; k-selection ties resolve to the smaller k.
+*Alternatives:* scattered `sort_values(...)` calls with implicit (and, for ties, non-stable) ordering. Rejected because the rule is then invisible, untestable, and inconsistent between the CSV, the chart, and the report.
+
 ## Risks / Trade-offs
 
 - **Popularity bias** -> vote floor (D1) plus floor sensitivity checks; measured numbers quoted in the report.

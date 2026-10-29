@@ -52,8 +52,8 @@ This report discovers themes purely from keyword data (not the official genre la
 
 ## HIGH-rated themes
 
-- **T4** — love | sex | based on novel | relationship | nu… [179 movies, high-rate 18.4%]
 - **T5** — world war ii | nazis | soldier | nazi germany |… [118 movies, high-rate 26.3%]
+- **T4** — love | sex | based on novel | relationship | nu… [179 movies, high-rate 18.4%]
 
 ## LOW-rated themes
 
@@ -66,9 +66,9 @@ This report discovers themes purely from keyword data (not the official genre la
 
 **Rating higher than genres predict (up):**
 
-- **T8** — murder | based on novel | suspense | sport | vi… [6062 movies, high-rate 11.4%] (residual +0.011)
-- **T4** — love | sex | based on novel | relationship | nu… [179 movies, high-rate 18.4%] (residual +0.071)
 - **T5** — world war ii | nazis | soldier | nazi germany |… [118 movies, high-rate 26.3%] (residual +0.104)
+- **T4** — love | sex | based on novel | relationship | nu… [179 movies, high-rate 18.4%] (residual +0.071)
+- **T8** — murder | based on novel | suspense | sport | vi… [6062 movies, high-rate 11.4%] (residual +0.011)
 
 **Rating lower than genres predict (down):**
 

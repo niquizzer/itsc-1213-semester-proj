@@ -1,4 +1,5 @@
-"""Design D10: every pipeline function has a docstring and full type hints."""
+"""Design D10/D12: every pipeline function has a docstring, full type hints,
+and a documented ``Preconditions:`` section."""
 
 from __future__ import annotations
 
@@ -11,6 +12,7 @@ from analysis import common
 
 MODULES: list[str] = [
     "01-load", "02-vocab", "03-cluster", "04-ratings", "05-validate", "06-report",
+    "common", "preconditions", "sorting",
 ]
 
 
@@ -42,6 +44,23 @@ def test_every_function_has_docstring_and_type_hints(stem: str) -> None:
         )
         assert node.returns is not None, (
             f"{stem}.py:{node.lineno} {node.name} lacks a return type hint"
+        )
+
+
+@pytest.mark.parametrize("stem", MODULES)
+def test_every_function_documents_its_preconditions(stem: str) -> None:
+    """Every function docstring has a ``Preconditions:`` section (D12).
+
+    A function with no preconditions still says so explicitly
+    (``Preconditions: none ...``) so a reader never has to guess whether the
+    contract was considered or simply forgotten.
+    """
+    path = common.ANALYSIS_DIR / f"{stem}.py"
+    source = path.read_text(encoding="utf-8")
+    for node in _function_defs(source):
+        docstring = ast.get_docstring(node) or ""
+        assert "Preconditions:" in docstring, (
+            f"{stem}.py:{node.lineno} {node.name} has no 'Preconditions:' section"
         )
 
 

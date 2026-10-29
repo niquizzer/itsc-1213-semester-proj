@@ -55,6 +55,13 @@
 - [x] 9.3 Write the root `README.md` covering what the project does, data attribution, setup, how to run `01-load.py` through `06-report.py`, the layout tree, and how to interpret the outputs, and verify every command it documents runs as written from a clean shell
 - [x] 9.4 Re-run the pipeline end-to-end 01-06 and verify the report regenerates identically from scratch with no manual steps
 
+## 10. Hardening: preconditions and custom sort keys
+
+- [x] 10.1 Add `analysis/preconditions.py` (`require_*` helpers, `PreconditionError` / `TypePreconditionError`) and `tests/test_preconditions.py` covering every helper plus the contracts each stage enforces
+- [x] 10.2 Add `analysis/sorting.py` (named record keys, key factories, stable `sort_frame`) and `tests/test_sorting.py` covering tie-breaking, descending order, rank tables, NaN placement, and stability
+- [x] 10.3 Give every function in `common.py` and `01-load.py` through `06-report.py` a `Preconditions:` docstring section enforced at the top of its body, and extend `tests/test_style.py` to fail on a missing section
+- [x] 10.4 Replace every ad-hoc `sort_values` / `sorted(key=lambda ...)` in the stages with a named key, make report lists "most extreme first", and re-run stages 04-06 to confirm the numbers are unchanged
+
 ## Workflow follow-up
 
 - Archive the change after the class project review and required deliverables are satisfied.

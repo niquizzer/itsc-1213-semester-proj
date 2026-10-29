@@ -76,6 +76,8 @@ Run the test suite with:
 .
 ├── analysis/
 │   ├── common.py          # shared helpers (output dir, JSON/sparse io, dashed-name loader)
+│   ├── preconditions.py   # require_* contract helpers + PreconditionError
+│   ├── sorting.py         # named custom sort keys + stable sort_frame()
 │   ├── 01-load.py         # load & clean metadata/keywords, join, vote floor, high label
 │   ├── 02-vocab.py        # keyword cleaning, vocab filter, TF-IDF matrix
 │   ├── 03-cluster.py      # k selection (silhouette) + k-means themes
@@ -88,6 +90,7 @@ Run the test suite with:
 │   ├── test_smoke.py, test_working_set.py, test_vocab.py, test_cluster.py,
 │   ├── test_labeling.py, test_ratings.py, test_oddballs.py,
 │   ├── test_validation.py, test_style.py   # TDD suite (docstring/hint checks too)
+│   ├── test_sorting.py, test_preconditions.py  # custom keys + contract checks
 ├── data/raw/              # read-only raw datasets (do not modify)
 ├── requirements.txt
 └── README.md
@@ -119,6 +122,30 @@ Thresholds and rules (all fixed, documented in the report):
 - HIGH/LOW = beyond a 95% CI around the global rate; oddball = bootstrap 95% CI on
   genre-expected residuals (fallback `|residual| >= 0.10`);
 - all random steps use **seed 42** so the whole pipeline reproduces exactly.
+
+## Code conventions: preconditions and custom sort keys
+
+Two small modules sit under every stage script:
+
+- **`analysis/preconditions.py`** — a lightweight design-by-contract layer. Every
+  function in the pipeline has a `Preconditions:` section in its docstring saying what
+  must be true when it is called, and enforces it at the top of its body with
+  `require_*` helpers (`require_columns`, `require_int`, `require_fraction`,
+  `require_existing_file`, ...). A violated contract raises `PreconditionError`
+  (a `ValueError`; type violations raise `TypePreconditionError`, which is also a
+  `TypeError`) with a message naming the argument and the value received, so a bad
+  call fails at the call site instead of somewhere inside pandas or scikit-learn.
+  Functions with no preconditions say so explicitly (`Preconditions: none`), and
+  `tests/test_style.py` fails if any function forgets the section.
+- **`analysis/sorting.py`** — every ordering rule in the pipeline is a *named key
+  function* for `sorted(..., key=...)`, plus `sort_frame(frame, key)` to apply one to
+  a `DataFrame` stably. Keys return tuples so ties are deterministic (e.g.
+  `keyword_weight_key` ranks keywords by `(-mean TF-IDF, keyword)`), negate a
+  component to sort descending (`high_pct_desc_key`), and use rank tables for
+  categorical order (`classification_rank_key` puts HIGH before baseline before LOW
+  instead of alphabetical). `NaN` always sorts last. The report lists are ordered
+  "most extreme first" with these keys (see `DIRECTION_ORDER` in `06-report.py`),
+  and `silhouette_key` makes the k-selection tie-break explicit (smaller k wins).
 
 ## Findings (summary)
 
